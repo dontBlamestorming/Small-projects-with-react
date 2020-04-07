@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import './App.css';     // reading css file
+import './css/reset.css';     // reading css file
+import './css/style.css';     // reading css file
 
 // Components
 import Clock from './components/Clock'
