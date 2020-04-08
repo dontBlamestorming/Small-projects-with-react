@@ -9,6 +9,9 @@ import Greeting from './components/Greeting'
 import Todolist from './components/Todolist'
 import Weather from './components/Weather'
 
+// authentication
+import LoginForm from './components/LoginForm'
+
 class App extends Component {
   render() {
     return (
@@ -18,6 +21,9 @@ class App extends Component {
         <Todolist></Todolist>
         <Weather></Weather>
         <Bg_photo></Bg_photo>
+
+        {/* authentication */}
+        <LoginForm></LoginForm>
       </div>
     )
   }
