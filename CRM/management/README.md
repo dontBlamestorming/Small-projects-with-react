@@ -1,3 +1,6 @@
+## CRM with React, NodeJS, MySQL
+본 프로젝트는 Client는 React로 구성하고 서버는 NodeJS로, 그리고 데이터베이스는 MySQL로 구성하여 고객 관리 시스템은 간단하게 만드는 것이다. 이 프로젝트를 통해 하나의 웹사이트가 어떤식으로 구성되는지, 데이터는 어떤식으로 이동을 하는지, React는 Client DOM에 어떤식으로 JSX 방식의 HTML을 전송하는지 알 수 있을 것이다.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
