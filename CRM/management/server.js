@@ -25,12 +25,33 @@ const connection = mysql.createConnection({
 
 connection.connect(); // init connect with database
 
+const multer = require('multer');
+const upload = multer({dest : './upload'}); // for setting when user upload file to here
+
 app.get('/api/customers', (req, res) => {
     connection.query(
         "SELECT * FROM CUSTOMER", (err, rows, fields) => {
             res.send(rows);
         }
     )
+});
+
+app.use('/image', express.static('./upload'));  // image 루트로 접근할때 upload 폴더와 매핑
+
+app.post('/api/customers', upload.single('image'), (req,res) => {
+    let sql = 'INSERT INTO CUSTOMER VALUES (null, ?, ?, ?, ?, ?)';
+    let image = '/image/' + req.file.filename;
+    let name = req.body.name;
+    let birthday = req.body.birthday;
+    let gender = req.body.gender;
+    let job = req.body.job;
+    let params = [image, name, birthday, gender, job];
+    
+    connection.query(sql, params,
+        (err, rows, fields) => {
+            res.send(rows);
+        }
+    );
 });
 
 app.listen(port, () => {

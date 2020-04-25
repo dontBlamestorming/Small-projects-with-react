@@ -18,11 +18,11 @@ class CustomerAdd extends Component {
     addCustomer = () => {
         const url = '/api/customers';
         const formData = new FormData();
-        formData.append('image', this.state.file)
-        formData.append('name', this.state.userName)
-        formData.append('birthday', this.state.birthday)
-        formData.append('gender', this.state.gender)
-        formData.append('job', this.state.job)
+        formData.append('image', this.state.file);
+        formData.append('name', this.state.userName);
+        formData.append('birthday', this.state.birthday);
+        formData.append('gender', this.state.gender);
+        formData.append('job', this.state.job);
         
         // give to server included file
         const config = {
@@ -40,6 +40,15 @@ class CustomerAdd extends Component {
             .then((response) => {
                 console.log(response.data);
             })
+        this.setState({
+            file :  null,
+            userName : '',
+            birthday : '',
+            gender : '',
+            job : '',
+            fileName : ''
+        })
+        window.location.reload(); // reloads the current URL, like the Refresh button.
     }
 
     handleFileChange = (e) => {
