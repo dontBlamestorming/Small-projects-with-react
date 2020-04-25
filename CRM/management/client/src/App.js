@@ -32,9 +32,25 @@ const styles = theme => ({ // css값마저 객체형태로 전달하네
 // component는 라이브러리로서 생명주기가 있다.
 class App extends Component {
   // 고객정보는 고정된 것이 아니라 사용자의 요청에 따라 바뀌는 값이다. 
-  state = {
-    customers : "",
-    completed : 0,
+  constructor(props){
+    super(props);
+    this.state = {
+      customers : '',
+      completed : 0
+    }
+  }
+
+  stateRefresh = () => {
+    this.setState({
+      customers : '',
+      completed : 0
+    });
+
+    this.callApi()
+      .then(res => this.setState({
+        customers : res
+      }))
+      .catch(err => console.log(err));
   }
 
   componentDidMount() {
@@ -103,7 +119,7 @@ class App extends Component {
             </TableBody>
           </Table>
         </Paper>
-        <CustomerAdd/>
+        <CustomerAdd stateRefresh = {this.stateRefresh}/>
       </div>
     )
   }
