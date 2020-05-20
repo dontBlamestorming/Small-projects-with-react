@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link, Route, BrowserRouter as Router } from "react-router-dom"; 
+import { Redirect } from "react-router-dom"; 
 
 class LoginForm extends Component {
 
@@ -8,32 +9,43 @@ class LoginForm extends Component {
         super(props);
         this.state = {
             userId:'',
-            password : ''
+            password : '',
+            redirect : false
         }
+    }
+
+    renderRedirect = () => {
+        if (this.state.redirect) {
+            return <Redirect to='/confirmedUser' />
+        }
+    }
+
+    setRedirect = () => {
+        this.setState({
+          redirect: true
+        });
     }
 
     handleFormSubmit = (e) => {
         e.preventDefault();
         this.loginUser()
-            // .then((response) => {
-            //     console.log(response.data);
-            // })
     }
 
     loginUser = () => {
-        axios.post('/auth/users', {
+        axios.post('/signIn/users', {
             userId: this.state.userId,
             password: this.state.password
-          })
-          .then(function (response) {
-            console.log(response);
-          })
-          .catch(function (error) {
+        }).then(function (response) {
+            if(response) {
+                this.setRedirect();
+            }
+        }.bind(this)).catch(function (error) {
             console.log(error);
-          });
-    }
+        });
+    };
    
     handleValueChange = (e) => {
+        // 아이디와 비밀번호, 닉네임 등을 type할 수 있게 하는 기능
         let nextState = {};
         nextState[e.target.name] = e.target.value;
         this.setState(nextState);
@@ -42,6 +54,7 @@ class LoginForm extends Component {
     render() {
         return (
             <div id="login">
+                {this.renderRedirect()}
                 <div className="login">
                     <form className="loginForm" onSubmit = {this.handleFormSubmit}>
                         <h1>아이디와 비밀번호를 입력해주세요.</h1>
@@ -49,7 +62,7 @@ class LoginForm extends Component {
                         PASSWORD : <input className="password" type="password" name="password" value={this.state.password} placeholder="password" onChange={this.handleValueChange}/><br/>
                         <button type="submit">로그인</button>
                     </form>
-                    {/* <form className="loginForm" name="loginForm" action="/auth/users" method="get">
+                    {/* <form className="loginForm" name="loginForm" action="/signIn/users" method="get">
                         <p><input className="id" name="userId" type="text" placeholder="email"/></p>
                         <p><input className="password" name="userPassword" type="password" placeholder="password"/></p>
                         <p><input className="loginBtn" name="loginBtn" type="submit"/></p>

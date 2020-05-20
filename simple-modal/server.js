@@ -24,20 +24,35 @@ const db = mysql.createConnection({
 
 db.connect(); // init connect with database
 
-app.post('/auth/users', (req, res) => {
-    // let sql = 'INSERT INTO Authentication VALUES (null, ?, ?, ?, now(), 0)';
+app.post('/signIn/users', (req, res) => {
+    let sql = '(SELECT mem_email, mem_password FROM Authentication)';
     let email = req.body.userId;
     let password = req.body.password;
     let params = [email, password];
 
-    db.query('SELECT mem_email, mem_password FROM Authentication', (err, result) => {
-        if(err) { throw err }
-        if(email == result[0].mem_email && password == result[0].mem_password) {
-            res.redirect('/');
-        } else {
-            res.send('Who are you?');
+    db.query(sql, params,
+        (err, result, fields) => {
+            if(err) {
+                res.send('누구세요?');
+                throw err;
+            } else if(email == result[0].mem_email && password == result[0].mem_password) {
+                res.json({ redirectURL: "/confirmedUser" });
+                console.log('환영합니다.');
+                res.end();
+            } 
         }
-    });
+    );
+
+    // db.query('SELECT mem_email, mem_password FROM Authentication', (err, result) => {
+    //     if(err) { throw err }
+    //     if(email == result[0].mem_email && password == result[0].mem_password) {
+    //         res.sned('환영합니다.')
+    //         res.end();
+    //     } else {
+    //         res.send('누구세요?');
+    //         res.end();
+    //     }
+    // });
 });
 
 app.post('/signUp/users', (req, res) => {
