@@ -46,6 +46,7 @@ app.post('/checkEmail', (req, res) => {
 
 app.post('/signIn/users', (req, res) => {
     let sql = 'SELECT mem_email, mem_password FROM Authentication';
+    console.log(res.body);
     let email = req.body.userId;
     let password = req.body.password;
     let params = [email, password];
@@ -66,11 +67,15 @@ app.post('/signIn/users', (req, res) => {
 });
 
 app.post('/signUp/users', (req, res) => {
-    let sql = 'INSERT INTO Authentication VALUES (null, ?, ?, ?, now(), 0)';
-    let email = req.body.userId;
-    let password = req.body.password;
-    let nickname = req.body.nickname;
-    let params = [email, password, nickname];
+    const sql = 'INSERT INTO Authentication VALUES (null, ?, ?, ?, ?, ?, ?, ?, now(), 0)';
+    const email = req.body.userId;
+    const password = req.body.password;
+    const nickname = req.body.nickname;
+    const birthYear = req.body.birthYear;
+    const birthMonth = req.body.birthMonth;
+    const birthDay = req.body.birthDay;
+    const gender = req.body.gender;
+    const params = [email, password, nickname, birthYear, birthMonth, birthDay, gender];
 
     db.query(sql, params,
         (err, result, fields) => {

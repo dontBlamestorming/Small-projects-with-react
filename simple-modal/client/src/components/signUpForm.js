@@ -3,8 +3,20 @@ import axios from "axios";
 import { Link, Route, BrowserRouter as Router } from "react-router-dom";
 import { Redirect } from "react-router-dom";
 
+// const BirthInfo = () => {
+//   let bowl = [];
+//     for(var i = 1; i < 13; i++) {
+//       bowl = bowl + `<option value=${i}>${i}월</option>`;
+//     }    
+//   return (
+//     <select name="score" id="select-id">
+//       {bowl}
+//     </select>
+//   )  
+// }
+// 왜 render될 때 bowl안의 값들이 ""로 들어가는지 모르겠음. 함수 실행의 문제일까 아니면 데이터형의 문제일까?
+
 const Notice = ({ isSame }) => {
-  console.log(isSame);
   return (
     <p>{isSame ? "동일한 비밀번호 입니다." : "동일한 비밀번호를 입력해 주세요."}</p>
   );
@@ -23,6 +35,10 @@ class signUpForm extends Component {
       password : "",
       nickname : "",
       checkPassword : "",
+      birthYear : "",
+      birthMonth : "",
+      birthDay : "",
+      gender : "",
       redirect : false,
       isDuplicate : false,
       isSamePassword : false
@@ -85,7 +101,11 @@ class signUpForm extends Component {
       .post("/signUp/users", {
         userId: this.state.userId,
         password: this.state.password,
-        nickname: this.state.nickname
+        nickname: this.state.nickname,
+        birthYear : this.state.birthYear,
+        birthMonth : this.state.birthMonth,
+        birthDay : this.state.birthDay,
+        gender : this.state.gender,
       })
       .then(
         function(response) {
@@ -100,10 +120,10 @@ class signUpForm extends Component {
   };
 
   handleValueChange = e => {
-    // 아이디와 비밀번호, 닉네임 등을 type할 수 있게 하는 기능
     let nextState = {};
     nextState[e.target.name] = e.target.value;
     this.setState(nextState);
+    console.log(nextState);
   };
 
   handleReconfirmPassword = e => {
@@ -122,6 +142,19 @@ class signUpForm extends Component {
 
     this.setState({ isSamePassword });
   };
+
+  // 생년월일  - 일단 
+  // 형변환도 문제가 아님, 렌더링 순서가 문제인 듯   
+  // getMonth = () => {
+  //   // let monthBowl = new Array;
+  //   let bowl = [];
+  //   for(var i = 1; i < 13; i++) {
+  //     bowl = bowl + `<option value=${i}>${i}월</option>`;
+  //   }
+  //   console.log(bowl);
+  //   return bowl;
+  // }
+
 
   render() {
     return (
@@ -144,6 +177,7 @@ class signUpForm extends Component {
             </button>
             <br />
             {this.renderDuplicateWarning()}
+
             PASSWORD :{" "}
             <input
               className="password"
@@ -164,7 +198,9 @@ class signUpForm extends Component {
               onChange={this.handleReconfirmPassword}
             />
             <br />
-            <Notice isSame={this.state.isSamePassword} />
+            <Notice               
+              isSame={this.state.isSamePassword}
+            />
             NICKNAME :{" "}
             <input
               className="nickname"
@@ -175,10 +211,80 @@ class signUpForm extends Component {
               onChange={this.handleValueChange}
             />
             <br />
+            성별 : 
+            <label 
+              for="genderInput1, genderInput2" // is it working?
+              onChange={this.handleValueChange}
+            >
+              <input
+                id="genderInput1" 
+                className="genderMale"
+                name="gender"
+                type="radio"
+                value="Male"
+              />남자
+
+              <input 
+                id="genderInput2" 
+                className="genderFemale"
+                name="gender"
+                type="radio" 
+                value="Female"
+              />여자
+            </label>
+            <br />
+
+            생년월일 : 
+            <input 
+              className="birthYear"
+              type="text"
+              name="birthYear"
+              maxlength="4" 
+              placeholder="년(4자)"   
+              onChange={this.handleValueChange}
+              value={this.state.birthYear}
+            />년
+
+            <label>
+              <select
+                className="birthMonth"
+                name="birthMonth"
+                value={this.state.birthMonth}
+                onChange={this.handleValueChange}
+              >
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                  <option>6</option>
+                  <option>7</option>
+                  <option>8</option>
+                  <option>9</option>
+                  <option>10</option>
+                  <option>11</option>
+                  <option>12</option>
+              </select>월
+            </label>
+
+            <input 
+              className="birthDay"              
+              type="text"
+              value={this.state.birthDay}
+              name="birthDay" 
+              maxlength="2" 
+              placeholder="일" 
+              onChange={this.handleValueChange}
+            />일
+            {/* <BirthInfo /> */}
+            
+            <br />
             <button className="signUpBtn" type="submit">
               회원가입
             </button>
           </form>
+
+
         </div>
       </div>
     );
