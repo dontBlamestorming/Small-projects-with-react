@@ -3,19 +3,6 @@ import axios from "axios";
 import { Link, Route, BrowserRouter as Router } from "react-router-dom";
 import { Redirect } from "react-router-dom";
 
-// const BirthInfo = () => {
-//   let bowl = [];
-//     for(var i = 1; i < 13; i++) {
-//       bowl = bowl + `<option value=${i}>${i}월</option>`;
-//     }    
-//   return (
-//     <select name="score" id="select-id">
-//       {bowl}
-//     </select>
-//   )  
-// }
-// 왜 render될 때 bowl안의 값들이 ""로 들어가는지 모르겠음. 함수 실행의 문제일까 아니면 데이터형의 문제일까?
-
 const Notice = ({ isSame }) => {
   return (
     <p>{isSame ? "동일한 비밀번호 입니다." : "동일한 비밀번호를 입력해 주세요."}</p>
@@ -23,11 +10,6 @@ const Notice = ({ isSame }) => {
 };
 
 class signUpForm extends Component {
-
-  // shouldComponentUpdate(newProps, newState) {
-  // 렌더링 최적화 
-  // }
-
   constructor(props) {
     super(props);
     this.state = {
@@ -40,7 +22,7 @@ class signUpForm extends Component {
       birthDay : "",
       gender : "",
       redirect : false,
-      isDuplicate : false,
+      isDuplicate : "",
       isSamePassword : false
     };
   }
@@ -56,27 +38,20 @@ class signUpForm extends Component {
         typedEmail: this.state.userId
       })
       .then(
-        function(response) {
-          if (response.data.isDuplicate === true) {
-            this.setIsDuplicate();
+        function(res) {
+          if (res.data.isDuplicate) {
+            this.setState({
+              isDuplicate : "중복된 이메일 입니다. 다른 이메일을 입력해 주세요."
+            });
+          } else {
+            this.setState({
+              isDuplicate : "사용가능한 이메일 입니다."
+            });
           }
         }.bind(this)
-      )
-      .catch(function(error) {
+      ).catch(function(error) {
         console.log(error);
       });
-  };
-
-  setIsDuplicate = () => {
-    this.setState({
-      isDuplicate: true
-    });
-  };
-
-  renderDuplicateWarning = () => {
-    if (this.state.isDuplicate) {
-      return <p>중복된 이메일입니다. 다른 이메일을 사용해 주세요.</p>;
-    }
   };
 
   renderRedirect = () => {
@@ -108,8 +83,8 @@ class signUpForm extends Component {
         gender : this.state.gender,
       })
       .then(
-        function(response) {
-          if (response.data.redirectURL) {
+        function(res) {
+          if (res.data.redirectURL) {
             this.setRedirect();
           }
         }.bind(this)
@@ -123,7 +98,6 @@ class signUpForm extends Component {
     let nextState = {};
     nextState[e.target.name] = e.target.value;
     this.setState(nextState);
-    console.log(nextState);
   };
 
   handleReconfirmPassword = e => {
@@ -143,19 +117,6 @@ class signUpForm extends Component {
     this.setState({ isSamePassword });
   };
 
-  // 생년월일  - 일단 
-  // 형변환도 문제가 아님, 렌더링 순서가 문제인 듯   
-  // getMonth = () => {
-  //   // let monthBowl = new Array;
-  //   let bowl = [];
-  //   for(var i = 1; i < 13; i++) {
-  //     bowl = bowl + `<option value=${i}>${i}월</option>`;
-  //   }
-  //   console.log(bowl);
-  //   return bowl;
-  // }
-
-
   render() {
     return (
       <div id="signUp">
@@ -172,12 +133,13 @@ class signUpForm extends Component {
               placeholder="email"
               onChange={this.handleValueChange}
             />
+
             <button className="emailCheckBtn" onClick={this.handleBtnOnClick}>
               중복체크
             </button>
             <br />
-            {this.renderDuplicateWarning()}
-
+            <p>{this.state.isDuplicate}</p>
+            
             PASSWORD :{" "}
             <input
               className="password"
@@ -276,7 +238,6 @@ class signUpForm extends Component {
               placeholder="일" 
               onChange={this.handleValueChange}
             />일
-            {/* <BirthInfo /> */}
             
             <br />
             <button className="signUpBtn" type="submit">

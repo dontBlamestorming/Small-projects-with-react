@@ -25,28 +25,25 @@ const db = mysql.createConnection({
 db.connect(); // init connect with database
 
 app.post('/checkEmail', (req, res) => {
-    let sql = 'SELECT mem_email from Authentication';
     let typedEmail = req.body.typedEmail;
+    let sql = `SELECT mem_email FROM Authentication where mem_email = '${typedEmail}'`;
 
     db.query(sql, typedEmail,
         (err, result, fields) => {
             if(err) {
                 throw err;
-            } else {
-                for( var i = 0; i < result.length; i++ ) {
-                    if(typedEmail == result[i].mem_email) {
-                        res.json({ isDuplicate : true });
-                        res.end();
-                        break;
-                    } 
-                }
+            } else if(result.length) {      // 배열에 값이 있다면
+                res.json({ isDuplicate : true });
+                res.end();         
+            } else if(!result.length) {     // 배열에 값이 없다면 
+                res.json({ isDuplicate : false });
+                res.end();
             }
     });
 });
 
 app.post('/signIn/users', (req, res) => {
     let sql = 'SELECT mem_email, mem_password FROM Authentication';
-    console.log(res.body);
     let email = req.body.userId;
     let password = req.body.password;
     let params = [email, password];
