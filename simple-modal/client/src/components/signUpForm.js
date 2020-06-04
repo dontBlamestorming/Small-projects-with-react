@@ -23,7 +23,8 @@ class signUpForm extends Component {
       gender : "",
       redirect : false,
       isDuplicate : "",
-      isSamePassword : false
+      isSamePassword : false,
+      emptyError : ""
     };
   }
 
@@ -40,6 +41,7 @@ class signUpForm extends Component {
       .then(
         function(res) {
           if (res.data.isDuplicate) {
+            console.log(res.data.isDuplicate);
             this.setState({
               isDuplicate : "중복된 이메일 입니다. 다른 이메일을 입력해 주세요."
             });
@@ -84,8 +86,13 @@ class signUpForm extends Component {
       })
       .then(
         function(res) {
+          console.log(res.data);
           if (res.data.redirectURL) {
             this.setRedirect();
+          } else if (res.data.emptyError) {
+            this.setState({
+              emptyError : "공백이 있습니다. 정보를 입력해 주세요."
+            })
           }
         }.bind(this)
       )
@@ -244,7 +251,7 @@ class signUpForm extends Component {
               회원가입
             </button>
           </form>
-
+          <p>{this.state.emptyError}</p>
 
         </div>
       </div>

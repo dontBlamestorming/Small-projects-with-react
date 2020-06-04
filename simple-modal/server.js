@@ -25,45 +25,41 @@ const db = mysql.createConnection({
 db.connect(); // init connect with database
 
 app.post('/checkEmail', (req, res) => {
-    let typedEmail = req.body.typedEmail;
-    let sql = `SELECT mem_email FROM Authentication where mem_email = '${typedEmail}'`;
+    const typedEmail = req.body.typedEmail;
+    const sql = `SELECT mem_email FROM Authentication where mem_email = '${typedEmail}'`;
 
-    db.query(sql, typedEmail,
-        (err, result, fields) => {
-            if(err) {
-                throw err;
-            } else if(result.length) {      // 배열에 값이 있다면
-                res.json({ isDuplicate : true });
-                res.end();         
-            } else if(!result.length) {     // 배열에 값이 없다면 
-                res.json({ isDuplicate : false });
-                res.end();
-            }
+    db.query(sql, typedEmail, (err, result, fields) => {
+        if(err) {
+            throw err;
+        } else if(result.length) {      // 배열에 값이 있다면
+            res.json({ isDuplicate : true });
+            res.end();         
+        } else if(!result.length) {     // 배열에 값이 없다면 
+            res.json({ isDuplicate : false });
+            res.end();
+        }
     });
 });
 
 app.post('/signIn/users', (req, res) => {
-    let sql = 'SELECT mem_email, mem_password FROM Authentication';
-    let email = req.body.userId;
-    let password = req.body.password;
-    let params = [email, password];
+    const sql = 'SELECT mem_email, mem_password FROM Authentication';
+    const email = req.body.userId;
+    const password = req.body.password;
+    const params = [email, password];
 
-    db.query(sql, params,
-        (err, result, fields) => {
-            if(err) {
-                res.send('누구세요?');
-                throw err;
-            } else if(email == result[0].mem_email && password == result[0].mem_password) {
-                res.json({ redirectURL : "/confirmedUser" });
-                console.log('환영합니다.');
-                res.end();
-            } 
-        }
-    );
-
+    db.query(sql, params, (err, result, fields) => {
+        if(err) {
+            res.send('누구세요?');
+            throw err;
+        } else if(email == result[0].mem_email && password == result[0].mem_password) {
+            res.json({ redirectURL : "/confirmedUser" });
+            console.log('환영합니다.');
+            res.end();
+        } 
+    });
 });
 
-app.post('/signUp/users', (req, res) => {
+app.post('/signUp/users', (req, res, next) => {
     const sql = 'INSERT INTO Authentication VALUES (null, ?, ?, ?, ?, ?, ?, ?, now(), 0)';
     const email = req.body.userId;
     const password = req.body.password;
@@ -74,18 +70,27 @@ app.post('/signUp/users', (req, res) => {
     const gender = req.body.gender;
     const params = [email, password, nickname, birthYear, birthMonth, birthDay, gender];
 
-    db.query(sql, params,
-        (err, result, fields) => {
-            if(err) {
-                res.send('중복된 아이디입니다. 다른 아이디를 입력해주시 바랍니다.');
-                throw err;
-            } else if(result) {
-                res.json({ redirectURL: "/confirmedUser" });
-                res.end();
-                console.log('회원가입을 축하드립니다.')
-            } 
+    db.query(sql, params, (err, result, fields) => {
+        if(err) {
+            next(err);
+            // res.json({ isDuplicate : "Hello! Client!!!" });
+            // res.end();
+        } else if(result) {
+            res.json({ redirectURL : "/confirmedUser" });
+            res.end();
+            console.log('회원가입을 축하드립니다.')
         }
-    );
+    });
+});
+
+app.use(function(req, res, next) {
+    res.status(404).send('Sorry cant find that!');
+});
+
+app.use(function (err, req, res, next) {
+    // console.error(err.stack);
+    res.json({ emptyError : true });
+    res.status(500).send('Something broke!');
 });
 
 app.listen(port, () => {
