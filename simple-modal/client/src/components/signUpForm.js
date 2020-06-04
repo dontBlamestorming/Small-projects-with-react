@@ -23,8 +23,9 @@ class signUpForm extends Component {
       gender : "",
       redirect : false,
       isDuplicate : "",
+      isDuplicateChecked : false,
       isSamePassword : false,
-      emptyError : ""
+      signUpSubmitError : ""
     };
   }
 
@@ -41,13 +42,13 @@ class signUpForm extends Component {
       .then(
         function(res) {
           if (res.data.isDuplicate) {
-            console.log(res.data.isDuplicate);
             this.setState({
-              isDuplicate : "중복된 이메일 입니다. 다른 이메일을 입력해 주세요."
+              isDuplicate : "사용가능한 이메일 입니다.",
+              isDuplicateChecked : true
             });
           } else {
             this.setState({
-              isDuplicate : "사용가능한 이메일 입니다."
+              isDuplicate : "중복된 이메일 입니다. 다른 이메일을 입력해 주세요."
             });
           }
         }.bind(this)
@@ -74,7 +75,8 @@ class signUpForm extends Component {
   };
 
   signUpUser = () => {
-    axios
+    if(this.state.isDuplicateChecked) {
+      axios
       .post("/signUp/users", {
         userId: this.state.userId,
         password: this.state.password,
@@ -86,19 +88,23 @@ class signUpForm extends Component {
       })
       .then(
         function(res) {
-          console.log(res.data);
           if (res.data.redirectURL) {
             this.setRedirect();
-          } else if (res.data.emptyError) {
+          } else if (res.data.signUpSubmitError) {
             this.setState({
-              emptyError : "공백이 있습니다. 정보를 입력해 주세요."
-            })
+              signUpSubmitError : res.data.signUpSubmitError
+            });
           }
         }.bind(this)
       )
       .catch(function(error) {
         console.log(error);
       });
+    } else {
+      this.setState({
+        signUpSubmitError : "아이디 중복확인을 해주시기 바랍니다."
+      })
+    }
   };
 
   handleValueChange = e => {
@@ -251,7 +257,7 @@ class signUpForm extends Component {
               회원가입
             </button>
           </form>
-          <p>{this.state.emptyError}</p>
+          <p>{this.state.signUpSubmitError}</p>
 
         </div>
       </div>

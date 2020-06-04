@@ -31,12 +31,15 @@ app.post('/checkEmail', (req, res) => {
     db.query(sql, typedEmail, (err, result, fields) => {
         if(err) {
             throw err;
-        } else if(result.length) {      // 배열에 값이 있다면
-            res.json({ isDuplicate : true });
-            res.end();         
-        } else if(!result.length) {     // 배열에 값이 없다면 
-            res.json({ isDuplicate : false });
-            res.end();
+        } else if(result.length) {      // 배열에 값이 있다면(아이디가 중복된다면)
+            res.json({ 
+                isDuplicate : false
+            });
+        } else if(!result.length) {     // 배열에 값이 없다면(아이디가 중복되지 않았다면)
+            res.json({ 
+                isDuplicate : true,
+                isDuplicateChecked : true
+            });
         }
     });
 });
@@ -77,7 +80,6 @@ app.post('/signUp/users', (req, res, next) => {
             // res.end();
         } else if(result) {
             res.json({ redirectURL : "/confirmedUser" });
-            res.end();
             console.log('회원가입을 축하드립니다.')
         }
     });
@@ -89,8 +91,10 @@ app.use(function(req, res, next) {
 
 app.use(function (err, req, res, next) {
     // console.error(err.stack);
-    res.json({ emptyError : true });
-    res.status(500).send('Something broke!');
+    res.json({ 
+        signUpSubmitError : "공백이 있습니다. 정보를 입력해 주세요."
+     }).status(500);
+    //res.json이나 res.send 같은 형태로 전송하는 경우에는 이들이 일부 데이터를 보낸 뒤에 자동으로 응답 종료
 });
 
 app.listen(port, () => {
