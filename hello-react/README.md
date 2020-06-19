@@ -1,68 +1,31 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 스터디를 위한 책 '리액트를 다루는 기술' 정리
 
-## Available Scripts
+### 제 1장
 
-In the project directory, you can run:
+1.1 - 왜 리액트인가?
+1.2 - 리액트의 특징
+1.3 - 작업 환경 설정
 
-### `yarn start`
+### 제 2장
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+2.1 - 코드 이해하기
+2.2 - JSX란?
+2.3 - JSX의 장점
+2.4 - JSX의 문법
+2.5 - ESLint와 Prettier 적용하기
+2.6 - 정리
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+JSX
+(1). 보기 쉽고 익숙하다.
+(2). 하나의 컴포넌트를 html의 태그와 비슷하게 사용할 수 있다.
+(3). 부모 요소(태그)가 감싸야한다. 왜냐하면 Virtual DOM에서 기존의 DOM과 컴포넌트 변화를 효율적으로 감지하기 위해 컴포넌트 내부는 하나의 DOM 트리 구조로 이루어져야 한다는 규칙때문.
+(4). react 모듈에 들어 있는 <Fragment>는 부모 요소로 사용할 수 있으며 부모 요소로서 '<> </>'도 사용가능
+(5). {}내부에 자바스크립트 표현식을 사용할 수 있음.
+(6). if문을 사용하고 싶으면 JSX 밖에서 사전에 값을 설정 또는 JSX내에서는 조건부 연산자를 사용
+(7). AND 연산자(&&)을 사용한 조건부 렌더링(조건부 연산자 사용 X) - 리액트는 false값은 rendering하지 않는다. 거꾸로 말하면 true값은 rendering을 한다.
+주의) '0'은 falsy한 값으로서 false가 아니다. 그래서 redering이 된다.
+(8) 함수에서 어떤 값이 undefined일 수도 있다면 OR(||)연산자를 사용해라. 리엑트는 undefined만 반환하여 rendering할 수 없다. 하지만 JSX 내에서는 가능하다.
+(9) return의 ()는 필수사항은 아니다. 한 줄로 표현할 수 있는 JSX는 감싸지 않는다.
+(10) 리엑트에서 DOM 요소에 스타일을 적용할 때에는 문자열 형태가 아닌 객체형태로 넣어야 한다. 카멜표기법을 따라야 한다. 바로 style값을 적용할 때에는 (11)
+(12) js 문법에서는 css를 통해 dom의 element에 접근하기 위해서는 class를 사용했지만 react에서는 className을 사용해야 함.
+(13) <input>과 같은 태그는 html에서 독립적인 태그로서 닫아주지 않아도 됬지만 JSX에서는 닫아주어야 한다. 코드를 깔끔하게 하고싶다면 self-closing태그로서 사용해도 된다. <input />
