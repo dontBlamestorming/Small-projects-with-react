@@ -4,23 +4,41 @@ import EventPractice from './EventPractice';
 import ValidationSample from './ValidationSample';
 import Counter from './Counter';
 import Say from './Say';
+import ScrollBox from './ScrollBox';
 
 import './App.css';
+
 // node_modules 디렉토리에 react 모듈이 설치되는데 그것을 가져오는 것
 
-const App = () => {
-  return (
-    <div>
-      <MyComponent name="React" favoriteNumber={5}>
-        리액트
-      </MyComponent>
-      <EventPractice />
-      <ValidationSample />
-      <Counter />
-      <Say />
-    </div>
-  );
-};
+class App extends Component {
+  render() {
+    return (
+      <div>
+        {/* <MyComponent name="React" favoriteNumber={5}>
+          리액트
+        </MyComponent>
+        <EventPractice />
+        <ValidationSample />
+        <Counter />
+        <Say /> */}
+        <ScrollBox
+          ref={ref => {
+            this.ScrollBox = ref;
+          }}
+        />
+        <button
+          onClick={() => {
+            this.ScrollBox.scrollToBotton();
+          }}
+          // 이렇게 만들면 이미 한 번 렌더링을해서 this.ScrollBox의 값을 읽었다고 한다.
+          // 만약 그렇다면 console.log(this.ScrollBox)를 눌르면 2번째 눌렀을 때 undefined이 뜨면 안되는거 아닌가?
+        >
+          맨 밑으로
+        </button>
+      </div>
+    );
+  }
+}
 
 /*
   컴포넌트 태그 사이의 문자열은 props.children 값이다. 
