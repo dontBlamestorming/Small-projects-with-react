@@ -5,6 +5,7 @@ import ValidationSample from './ValidationSample';
 import Counter from './Counter';
 import Say from './Say';
 import ScrollBox from './ScrollBox';
+import IterationSample from './IterationSample';
 
 import './App.css';
 
@@ -35,6 +36,7 @@ class App extends Component {
         >
           맨 밑으로
         </button>
+        <IterationSample />
       </div>
     );
   }
