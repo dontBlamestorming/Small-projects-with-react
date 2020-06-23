@@ -1,20 +1,42 @@
 import React, { Component, Fragment } from 'react';
-import MyComponent from './MyComponent';
-import EventPractice from './EventPractice';
-import ValidationSample from './ValidationSample';
-import Counter from './Counter';
-import Say from './Say';
-import ScrollBox from './ScrollBox';
-import IterationSample from './IterationSample';
+// import MyComponent from './MyComponent';
+// import EventPractice from './EventPractice';
+// import ValidationSample from './ValidationSample';
+// import Counter from './Counter';
+// import Say from './Say';
+// import ScrollBox from './ScrollBox';
+// import IterationSample from './IterationSample';
+import LifeCycleSample from './LifeCycleSample';
+import ErrorBoundary from './ErrorBoundary';
 
-import './App.css';
+// import './App.css';
 
 // node_modules 디렉토리에 react 모듈이 설치되는데 그것을 가져오는 것
 
+function getRandomColor() {
+  return '#' + Math.floor(Math.random() * 16777215).toString(16);
+  // 16777215를 hex로 표현하면 ffffff가 되므로 해당 코드는 0000000부터 ffffff 값을 반환한다.
+}
+
 class App extends Component {
+  state = {
+    color: '#000000'
+  };
+
+  handleClick = () => {
+    this.setState({
+      color: getRandomColor()
+    });
+  };
+
   render() {
     return (
       <div>
+        <button onClick={this.handleClick}>랜덤색상</button>
+        <ErrorBoundary>
+          <LifeCycleSample color={this.state.color} />
+        </ErrorBoundary>
+
         {/* <MyComponent name="React" favoriteNumber={5}>
           리액트
         </MyComponent>
@@ -22,7 +44,7 @@ class App extends Component {
         <ValidationSample />
         <Counter />
         <Say /> */}
-        <ScrollBox
+        {/* <ScrollBox
           ref={ref => {
             this.ScrollBox = ref;
           }}
@@ -35,8 +57,9 @@ class App extends Component {
           // 만약 그렇다면 console.log(this.ScrollBox)를 눌르면 2번째 눌렀을 때 undefined이 뜨면 안되는거 아닌가?
         >
           맨 밑으로
-        </button>
-        <IterationSample />
+        </button> */}
+        {/* <IterationSample /> */}
+        {/* <LifeCycleSample /> */}
       </div>
     );
   }

@@ -107,3 +107,20 @@ JSX<br>
 > 6.4.3 - 데이터 제거에서의 filter
 
 6.5 - 정리<br>
+
+### 제 7장 - 컴포넌트의 라이프사이클 메서드
+
+7.1 - 라이프 사이클 메서드의 이해<br>
+
+> 7.1.1 - 접두사 Will과 Did
+> 7.1.2 - 마운트, 업데이트, 언마운트
+
+7.2 - 라이프 사이클 메서드 살펴보기<br>
+
+> 7.2.1 - constructor -> getDerivedStateFromProps -> render -> componentDidMount -> "DATA UPDATED" -> getDerivedStateFormProps -> shouldComponentUpdate -> render -> getSnapshotBeforeUpdate -> componentDidUpdate(snapShot)
+
+7.3 - 라이프 사이클 메서드 사용하기<br>
+
+> 7.3.1 - Error 처리
+
+7.4 - 정리<br>
