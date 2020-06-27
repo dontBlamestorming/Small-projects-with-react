@@ -1,22 +1,30 @@
-import React, { Component } from 'react';
-import './css/reset.css';     // reading css file
-import './css/style.css';     // reading css file
+import React, { Component, Fragment } from "react";
+import "./css/reset.css"; // reading css file
+import "./css/style.css"; // reading css file
 
 // Routing
-import { Link, Route, BrowserRouter as Router } from "react-router-dom"; 
+import { Link, Route, BrowserRouter as Router } from "react-router-dom";
 
 // Components
-import Clock from './components/Clock';
-import Bg_photo from './components/BgPhoto';
-import Greeting from './components/Greeting';
-import Todolist from './components/Todolist';
-import Weather from './components/Weather';
+import Clock from "./components/Clock";
+import Bg_photo from "./components/BgPhoto";
+import Greeting from "./components/Greeting";
+import Todolist from "./components/Todolist";
+import Weather from "./components/Weather";
 
 // authentication
-import signUpForm from './components/signUpForm';
-import LoginForm from './components/LoginForm';
+import SignUpForm from "./components/SignUpForm";
+import LoginForm from "./components/LoginForm";
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userId: "",
+      password: "",
+      nickName: ""
+    };
+  }
 
   // state = {
   //   user : ""
@@ -29,11 +37,26 @@ class App extends Component {
   //     }))
   //     .catch(err => console.log(err));
   // }
- 
+
   // callApi = async () => {
   //   const response = await fetch('/auth/users');
   //   const body = await response.json();
   //   return body;
+  // }
+
+  handleValueChange = Value => {
+    this.setState(Value);
+    console.log(this.state);
+  };
+
+  // this.handleValueChange = this.handleValueChange.bind(this); 이 필요함(차이 공부)
+
+  // handleValueChange(Value) {
+  //   console.log(Value);
+  //   this.setState({
+  //     userId : Value,
+  //     password : Value
+  //   })
   // }
 
   render() {
@@ -41,17 +64,35 @@ class App extends Component {
       <Router>
         <div className="App">
           <main>
-            <Route exact path="/" component={LoginForm} />
-            <Route path="/signUp" component={signUpForm} />
-            <Route path="/confirmedUser" component={Clock} />
-            <Route path="/confirmedUser" component={Greeting} />
-            <Route path="/confirmedUser" component={Todolist} />
-            <Route path="/confirmedUser" component={Weather} />
-            <Route path="/confirmedUser" component={Bg_photo} />
+            <Route
+              exact
+              path="/"
+              render={props => (
+                <LoginForm
+                  {...props}
+                  onValueChange={this.handleValueChange}
+                  userId={this.state.userId}
+                  password={this.state.password}
+                />
+              )}
+            />
+            <Route path="/signUp" render={props => <SignUpForm {...props} />} />
+            <Route
+              path="/confirmedUser"
+              render={props => (
+                <Fragment>
+                  <Greeting {...props} nickName={this.state.mem_nickname} />
+                  <Clock />
+                  <Todolist />
+                  <Weather />
+                  <Bg_photo />
+                </Fragment>
+              )}
+            />
           </main>
         </div>
       </Router>
-    )
+    );
   }
 }
 
