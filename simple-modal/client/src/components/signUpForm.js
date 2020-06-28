@@ -31,6 +31,16 @@ class SignUpForm extends Component {
     };
   }
 
+  genMonth = () => {
+    const month = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    // return month.map((array, index) => <option key={index}>{array}</option>);
+    const monthList = month.map((arrValue, index) => {
+      return <option key={index}>{arrValue}</option>;
+    });
+
+    return monthList;
+  };
+
   handleBtnOnClick = e => {
     e.preventDefault();
     this.DuplicateEmailCheck();
@@ -226,18 +236,7 @@ class SignUpForm extends Component {
                 value={this.state.birthMonth}
                 onChange={this.handleValueChange}
               >
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                <option>6</option>
-                <option>7</option>
-                <option>8</option>
-                <option>9</option>
-                <option>10</option>
-                <option>11</option>
-                <option>12</option>
+                {this.genMonth()}
               </select>
               월
             </label>
