@@ -46,3 +46,12 @@ CSS를 불러와서 사용할 때 클래스 이름을 고유값 '[파일이름]\
 > CSS의 클래스를 조건부로 설정할 때 매우 유용한 라이브러리 - classNames // Scss로도 사용가능(CSSModule.module.scss)
 
 CSS Module이 적용된 파일을 불러오면 객체를 하나 전달받는다. 이 객체의 값은 클래스이름(key):값(고유값)이다. 글로벌 CSS인 경우는 그대로 className을 문자열로 넣으면 된다. 두 개의 클래스 이름을 적용할 때에는 template literal을 사용하면 된다.<br />
+
+### styled-components
+
+CSS-in-JS : 자바스크립트 안에 스타일을 선언하는 방식으로 유명한 라이브러리는 styled-components가 있다. 대체할 수 있는 라이브러리는 emotion이다. js파일 안에 CSS까지 작성할 수 있기 때문에 .css 또는 .scss를 만들 필요가 없다.
+
+> 1. Tagged 템플릿 리터럴 - 일반 템플릿 리터럴과 다른점은 JS 객체나 함수를 전달할 때 온전히 추출 가능 - styled-components는 이러한 속성을 사용하여 컴포넌트의 props 스타일쪽에서 쉽게 조회하도록 한다.
+>    > https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Template_literals 참고할 것
+> 2. style-components의 property에 tagged 템플릿 리터럴을 이용하여 component에 선제적으로 스타일을 적용시킬 수 있다. (예 : styled.div`(style)`)
+> 3. media를 모듈화하여 사용하면 여기 저기서 불러와 이용하기가 편리하다(코드참고)
