@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const Info = () => {
   const [name, setName] = useState("");
@@ -12,6 +12,28 @@ const Info = () => {
     setNickname(e.target.value);
   };
 
+  useEffect(() => {
+    console.log("mount");
+    console.log(name);
+
+    return () => {
+      console.log("unmount or update");
+      console.log(name);
+    };
+  });
+
+  /*
+    useEffect(() => { 
+        1. console.log("This is mounted"); - 두번 째 파라미터로 []이 들어왔을 때
+        2. console.log("rendering is completed!!!"); -
+        console.log({
+          name,
+          nickname
+        });
+      
+      console.log("name의 값이 변동될 때" + name);
+    }, [name]); // [] -> mount될 때만 실행하게 한다.
+  */
   return (
     <div>
       <div>
@@ -19,10 +41,12 @@ const Info = () => {
         <input value={nickname} onChange={onChangeNickname} />
       </div>
       <div>
-        <b>이름 : </b> {name}
-      </div>
-      <div>
-        <b>닉네임 : </b> {nickname}
+        <div>
+          <b>이름 : </b> {name}
+        </div>
+        <div>
+          <b>닉네임 : </b> {nickname}
+        </div>
       </div>
     </div>
   );
