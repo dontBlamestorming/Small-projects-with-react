@@ -1,6 +1,42 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
+
+function reducer(state, action) {
+  return {
+    ...state,
+    [action.name]: action.value
+  };
+}
 
 const Info = () => {
+  const [state, dispatch] = useReducer(reducer, {
+    name: "",
+    nickname: ""
+  });
+  const { name, nickname } = state;
+  const onChange = e => {
+    dispatch(e.target);
+  };
+
+  return (
+    <div>
+      <div>
+        <input name="name" value={name} onChange={onChange} />
+        <input name="nickname" value={nickname} onChange={onChange} />
+      </div>
+      <div>
+        <div>
+          <b>이름 : </b>
+          {name}
+        </div>
+        <div>
+          <b>닉네임 : </b>
+          {nickname}
+        </div>
+      </div>
+    </div>
+  );
+};
+/*
   const [name, setName] = useState("");
   const [nickname, setNickname] = useState("");
 
@@ -22,18 +58,17 @@ const Info = () => {
     };
   });
 
-  /*
-    useEffect(() => { 
-        1. console.log("This is mounted"); - 두번 째 파라미터로 []이 들어왔을 때
-        2. console.log("rendering is completed!!!"); -
-        console.log({
-          name,
-          nickname
-        });
+    // useEffect(() => { 
+    //     1. console.log("This is mounted"); - 두번 째 파라미터로 []이 들어왔을 때
+    //     2. console.log("rendering is completed!!!"); -
+    //     console.log({
+    //       name,
+    //       nickname
+    //     });
       
-      console.log("name의 값이 변동될 때" + name);
-    }, [name]); // [] -> mount될 때만 실행하게 한다.
-  */
+    //   console.log("name의 값이 변동될 때" + name);
+    // }, [name]); // [] -> mount될 때만 실행하게 한다.
+  
   return (
     <div>
       <div>
@@ -51,5 +86,5 @@ const Info = () => {
     </div>
   );
 };
-
+*/
 export default Info;
