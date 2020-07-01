@@ -21,9 +21,25 @@ useReducer는 현재 상태, 그리고 업데이트를 위해 필요한 정보�
 > 1. useReducer를 사용했을 때의 가장 큰 장점은 컴포넌트 업데이트 로직을 컴포넌트 바깥으로 빼낼 수 있다는 것이다.
 > 2.
 
-### useMemo
+### useMemo and useCallback(용도의 차이를 명확히 할 필요가 있음)
 
-### useCallback
+useMemo는 함수형 컴포넌트 내부에서 발생하는 연산을 최적화 시킬 수 있다. 특정 값이 바뀌었을 때만 연산을 실행하고, 값이 바뀌지 않았다면 이전에 연산했던 결과를 Memo하여 남김으로써 불필요한 함수생성과 렌더링을 방지한다.<br />
+<br />
+useMemo와 같이 주로 렌더링 성능을 최적화 해야 하는 상황에서 사용한다. Event handler 함수를 필요할 때만 생성할 수 있다. Average 컴포넌트와 같이 onChange, onInsert라는 함수는 해당 컴포넌트가 re-rendering될 때마다 함수가 새로 생성된다. 대부분은 이러한 방식이 크게 문제는 없지만 렌더링해야 할 컴포넌트가 많아지면 최적화가 필요하다.<br />
+
+useCallback(() => {
+console.log('hello world!!!')
+}, [])
+
+useMemo(() => {
+const fn = () => {
+console.log('hello world!!!');
+};
+return fn;
+}, [])
+
+숫자, 문자열, 객체처럼 일반 값을 재사용 - useMemo
+함수 재사용 - useCallback
 
 ### useRef
 
