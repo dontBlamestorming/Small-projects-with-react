@@ -3,13 +3,14 @@ import "./App.css";
 import Counter from "./Counter";
 import Info from "./Info";
 import Average from "./Average";
+import RefSample from "./RefSample";
 
 const App = () => {
   const [visible, setVisible] = useState(false);
 
   return (
     <div>
-      <Average></Average>
+      <RefSample></RefSample>
     </div>
     // <div>
     //   <button

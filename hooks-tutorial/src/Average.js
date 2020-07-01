@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useRef } from "react";
 
 const getAverage = numbers => {
   console.log("평균 값 계산 중..");
@@ -11,6 +11,11 @@ const Average = () => {
   const [list, setList] = useState([]);
   const [number, setNumber] = useState("");
 
+  // useRef를 사용하여 ref를 설정하면 useRef를 통해 만든 객체 안의 current 값이 실제 엘리먼트를 가리킨다.
+  const inputEl = useRef(null);
+
+  console.log("I AM inputEl = ", inputEl.current); // I AM inputEl = {current: input}
+
   const onChange = useCallback(e => {
     console.log("this is onchange in useCallback");
     setNumber(e.target.value);
@@ -20,8 +25,11 @@ const Average = () => {
     console.log("this is onInsert in useCallback");
     const nextList = list.concat(parseInt(number));
     setList(nextList);
+
+    // 초기화
     setNumber("");
-  }, [number, list]);
+    inputEl.current.focus();
+  }, [number, list]); // number or list가 업데이트 될 때만 함수 생성
 
   /*
   함수 내부에서 상태 값에 의존해야 할 때는 그 값을 반드시 두 번째 파라미터 안에 포함시켜야 한다. 
@@ -45,7 +53,7 @@ const Average = () => {
 
   return (
     <div>
-      <input value={number} onChange={onChange} />
+      <input value={number} onChange={onChange} ref={inputEl} />
       <button onClick={onInsert}>등록</button>
       <ul>
         {list.map((value, index) => (
