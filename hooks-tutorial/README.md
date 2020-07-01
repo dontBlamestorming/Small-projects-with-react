@@ -52,6 +52,6 @@ return fn;
 
 ### 커스텀 Hooks 만들기
 
-### 다른 Hooks
+여러 컴포넌트에서 비슷한 기능을 공유할 경우, 커스텀 Hooks를 만들어서 재사용이 가능하다. useState 여러개를 관리하기 위해 useReducer을 사용했었다. 이 로직을 useInputs라는 hook으로 분리해보자.
 
 ### 정리

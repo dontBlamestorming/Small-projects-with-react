@@ -1,13 +1,22 @@
 import React, { useState, useEffect, useReducer } from "react";
-
-function reducer(state, action) {
-  return {
-    ...state,
-    [action.name]: action.value
-  };
-}
+import useInputs from "./useInputs";
 
 const Info = () => {
+  const [state, onChange] = useInputs({
+    name: "",
+    nickname: ""
+  });
+
+  const { name, nickname } = state;
+
+  /*
+  function reducer(state, action) {
+    return {
+      ...state,
+      [action.name]: action.value
+    };d 
+  }
+
   const [state, dispatch] = useReducer(reducer, {
     name: "",
     nickname: ""
@@ -16,6 +25,7 @@ const Info = () => {
   const onChange = e => {
     dispatch(e.target);
   };
+  */
 
   return (
     <div>

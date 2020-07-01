@@ -10,7 +10,7 @@ const App = () => {
 
   return (
     <div>
-      <RefSample></RefSample>
+      <Info></Info>
     </div>
     // <div>
     //   <button
