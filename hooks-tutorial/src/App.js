@@ -1,29 +1,31 @@
 import React, { useState } from "react";
 import "./App.css";
-import Counter from "./Counter";
-import Info from "./Info";
-import Average from "./Average";
-import RefSample from "./RefSample";
+import FuncComp from "./FuncComp";
+import ClassComp from "./ClassComp";
 
-const App = () => {
-  const [visible, setVisible] = useState(false);
-
+function App() {
+  const [showClassComp, setShowClassComp] = useState(true);
+  const [showFuncComp, setShowFuncComp] = useState(true);
   return (
-    <div>
-      <Info></Info>
+    <div className="container">
+      <h1>Hello temper</h1>
+      {showClassComp ? <FuncComp initNumber={2}></FuncComp> : null}
+      {showFuncComp ? <ClassComp initNumber={2}></ClassComp> : null}
+      <input
+        type="button"
+        value="removeClassComp"
+        onClick={() => {
+          setShowClassComp(false);
+        }}
+      />
+      <input
+        type="button"
+        value="removeFuncComp"
+        onClick={() => {
+          setShowFuncComp(false);
+        }}
+      />
     </div>
-    // <div>
-    //   <button
-    //     onClick={() => {
-    //       setVisible(!visible); // false -> true, true -> false
-    //     }}
-    //   >
-    //     {visible ? "숨기기" : "보이기"}
-    //   </button>
-    //   <hr />
-    //   {visible && <Info />}
-    // </div>
   );
-};
-
+}
 export default App;
