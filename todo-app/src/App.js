@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useReducer } from 'react';
 import TodoTemplate from './components/TodoTemplate';
 import TodoInsert from './components/TodoInsert';
 import TodoList from './components/TodoList';
@@ -15,10 +15,28 @@ function createBulkTodos() {
   return array;
 }
 
+function toReducer(todos, action) {
+  switch (action.type) {
+    case 'INSERT': // 새로추가
+      // { type : 'INSERT', todo: { id : 1, text : 'todo', checked : false }}
+      return todos.concat(action.todo);
+    case 'REMOVE': // 제거
+      // { type: 'REMOVE', id : 1 }
+      return todos.filter(todo => todo.id !== action.id);
+    case 'TOGGLE': // 토글
+      // { type: 'REMOVE', id : 1}
+      return todos.map(todo =>
+        todo.id === action.id ? { ...todo, checked: !todo.checked } : todo,
+      );
+    default:
+      return todos;
+  }
+}
+
 const App = () => {
   // useState의 기본값으로 함수 자체를 넣어주면 컴포넌트가 처음 렌더링 될 때만 해당 함수가 실행
   // 만약 해당함수() 식으로 넣으면 리렌더링 될 때마다 해당 함수가 호출됨
-  const [todos, setTodos] = useState(createBulkTodos);
+  const [todos, dispatch] = useReducer(toReducer, undefined, createBulkTodos);
   // 고유 값으로 사용될 id - ref를 사용하여 변수 담기
   const nextId = useRef(2501);
 
@@ -29,23 +47,19 @@ const App = () => {
       checked: false,
     };
 
-    setTodos(todos => todos.concat(todo));
+    dispatch({ type: 'INSERT', todo });
     nextId.current += 1; // nextId 1씩 더하기
-  });
+  }, []);
 
   const onRemove = useCallback(id => {
-    setTodos(todos => todos.filter(todo => todo.id !== id));
-  });
+    dispatch({ type: 'REMOVE', id });
+  }, []);
 
   // 렌더링 되어 있는 데이터의 id는 1,2,3 ... , n 이 있을 것이다. 예를들면 onClick 이벤트가 발생한 데이터의 id가 3이라고 가정해보자. 위의 onRemove의 filter함수조건이 todo.id !== id이다. 여기서 todo.id는 렌더링되어있는 전체 id이며 조건식 뒤의 id는 3이다. 즉, 전체 id값 중 3이 아닌 데이터를 필터하여 새로운 배열을 만드는 것이라고 생각하면 이해하기 쉽다.
 
   const onToggle = useCallback(id => {
-    setTodos(todos =>
-      todos.map(todo =>
-        todo.id === id ? { ...todo, checked: !todo.checked } : todo,
-      ),
-    );
-  });
+    dispatch({ type: 'TOGGLE', id });
+  }, []);
 
   // 인자로 받을 id(아마 onToggle 이벤트가 발생한 id겠지)와
 
