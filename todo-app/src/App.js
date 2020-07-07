@@ -3,50 +3,44 @@ import TodoTemplate from './components/TodoTemplate';
 import TodoInsert from './components/TodoInsert';
 import TodoList from './components/TodoList';
 
-const App = () => {
-  const [todos, setTodos] = useState([
-    {
-      id: 1,
-      text: '리액트의 기초 알아보기',
+function createBulkTodos() {
+  const array = [];
+  for (let i = 1; i <= 2500; i++) {
+    array.push({
+      id: i,
+      text: `할 일 ${i}`,
       checked: false,
-    },
-    {
-      id: 2,
-      text: '컴포넌트 스타일링 해보기',
-      checked: false,
-    },
-    {
-      id: 3,
-      text: '일정 관리 앱 만들어 보기',
-      checked: false,
-    },
-  ]);
-  // 고유 값으로 사용될 id - ref를 사용하여 변수 담기
-  const nextId = useRef(4);
-  const onInsert = useCallback(
-    text => {
-      const todo = {
-        id: nextId.current,
-        text,
-        checked: false,
-      };
-      setTodos(todos.concat(todo));
-      nextId.current += 1; // nextId 1씩 더하기
-    },
-    [todos], // todos값이 변경하는지 검사
-  );
+    });
+  }
+  return array;
+}
 
-  const onRemove = useCallback(
-    id => {
-      setTodos(todos.filter(todo => todo.id !== id));
-    },
-    [todos],
-  );
+const App = () => {
+  // useState의 기본값으로 함수 자체를 넣어주면 컴포넌트가 처음 렌더링 될 때만 해당 함수가 실행
+  // 만약 해당함수() 식으로 넣으면 리렌더링 될 때마다 해당 함수가 호출됨
+  const [todos, setTodos] = useState(createBulkTodos);
+  // 고유 값으로 사용될 id - ref를 사용하여 변수 담기
+  const nextId = useRef(2501);
+
+  const onInsert = useCallback(text => {
+    const todo = {
+      id: nextId.current,
+      text,
+      checked: false,
+    };
+
+    setTodos(todos => todos.concat(todo));
+    nextId.current += 1; // nextId 1씩 더하기
+  });
+
+  const onRemove = useCallback(id => {
+    setTodos(todos => todos.filter(todo => todo.id !== id));
+  });
 
   // 렌더링 되어 있는 데이터의 id는 1,2,3 ... , n 이 있을 것이다. 예를들면 onClick 이벤트가 발생한 데이터의 id가 3이라고 가정해보자. 위의 onRemove의 filter함수조건이 todo.id !== id이다. 여기서 todo.id는 렌더링되어있는 전체 id이며 조건식 뒤의 id는 3이다. 즉, 전체 id값 중 3이 아닌 데이터를 필터하여 새로운 배열을 만드는 것이라고 생각하면 이해하기 쉽다.
 
   const onToggle = useCallback(id => {
-    setTodos(
+    setTodos(todos =>
       todos.map(todo =>
         todo.id === id ? { ...todo, checked: !todo.checked } : todo,
       ),
@@ -110,4 +104,6 @@ export default App;
         });
         setTodos(newTodos);
     });
+
+
 */
