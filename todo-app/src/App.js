@@ -123,5 +123,19 @@ export default App;
         setTodos(newTodos);
     });
 
+    전개구문은 얕은 복사(Shallow copy)를 한다. 만약 객체 내부의 객체를 불변성을 유지하며 새 값을 할당하려면 복잡하다.
+    const complexObject = {SOMETHING};
+    const nextComplexObject = {
+      ...complexObject,
+      objectInside: {
+        ...complexObject.objectInside,
+        enabled : false
+      }
+    };
+
+    console.log(complexObject === nextComplexObject) // false
+    console.log(complexObject.objectInside === nextComplexObject.objectInside) // false
+
+    까다롭다. Immer라는 라이브러리를 사용하자.
 
 */
