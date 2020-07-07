@@ -102,6 +102,12 @@ const [todos, setTodos] = useState(createBulkTodos);
 - 이렇게 함수가 새로 만들어지는 상황을 방지하는 방법은 두가지이다. 첫번 째는 useState의 함수형 업데이트 기능을 사용하는 것, 그리고 두번 째는 useReducer를 사용하는 것.
 
 1. useState()의 함수형 업데이트 - '새로운 상태'를 파라미터로 넣는 것이 아닌 '어떻게 업데이트 할지'를 정의해주는 함수를 넣는 것
+
    > const [number, setNumber] = useState(0);
    > // prevNumbers는 현재 number를 가리킨다.
    > const onIncrease = useCallback(() => setNumber(prevNumbers => prevNumbers + 1), [],));
+   > 기존 코드에서 useCallback의 두번째 파라미터로 []가 들어가면 한번만 실행, [somthing]이 들어가면 조건부 실행이다. 여기서 이 조건부 실행을 삭제해야 한다. 왜냐하면 해당 값이 변동된다면 그 조건이 같은 2500개의 코드의 함수가 새로 생성됙 때문이다. 따라서 이것을 setValue의 인자의 파라미터로 넘겨주면 변동되는 값(최신값)을 참조하여 해당 컴포넌트의 함수만 다시그리면 된다.
+
+2. useReducer
+   > dispatch()로 action의 조건부를 설정할 수 있다. type데이터와 필요한 인자값을 파라미터로 주면 된다.
+   > 함수형 컴포넌트 밖으로 로직을 빼내올 수 있다는 장점이 있다.

@@ -16,6 +16,8 @@ function createBulkTodos() {
 }
 
 function toReducer(todos, action) {
+  console.log(todos);
+  console.log(action.type);
   switch (action.type) {
     case 'INSERT': // 새로추가
       // { type : 'INSERT', todo: { id : 1, text : 'todo', checked : false }}
@@ -36,7 +38,9 @@ function toReducer(todos, action) {
 const App = () => {
   // useState의 기본값으로 함수 자체를 넣어주면 컴포넌트가 처음 렌더링 될 때만 해당 함수가 실행
   // 만약 해당함수() 식으로 넣으면 리렌더링 될 때마다 해당 함수가 호출됨
-  const [todos, dispatch] = useReducer(toReducer, undefined, createBulkTodos);
+  const [todos, dispatch] = useReducer(toReducer, undefined, createBulkTodos); //???? 작동원리 이해안감]
+  // undefined 때문에 이 컴포넌트가 처음 렌더링 될 때만 createBulkTodos 함수가 호출됨 - 이유는 모름
+
   // 고유 값으로 사용될 id - ref를 사용하여 변수 담기
   const nextId = useRef(2501);
 
