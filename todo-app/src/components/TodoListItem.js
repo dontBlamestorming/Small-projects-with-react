@@ -9,31 +9,36 @@ import './TodoListItem.scss';
 
 // MdCheckBox - 할 일이 완료되었을 때 체크된 상태를 표기할 것
 
-const TodoListItem = ({ todo, onRemove, onToggle }) => {
+const TodoListItem = ({ todo, onRemove, onToggle, style }) => {
   const { id, text, checked } = todo; // 객체 비구조화 할당
   //   위와 같은 코드
   //   const text = todo.text;
   //   const checked = todo.checked;
   //   const id = todo.id;
   return (
-    <div className="TodoListItem">
-      <div
-        className={cn('checkBox', { checked })}
-        onClick={() => {
-          onToggle(id);
-        }}
-      >
-        {checked ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
-        <div className="text">{text}</div>
-      </div>
-      <div className="remove" onClick={() => onRemove(id)}>
-        <MdRemoveCircleOutline />
+    <div className="TodoListItem-virtualized" style={style}>
+      <div className="TodoListItem">
+        <div
+          className={cn('checkBox', { checked })}
+          onClick={() => {
+            onToggle(id);
+          }}
+        >
+          {checked ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
+          <div className="text">{text}</div>
+        </div>
+        <div className="remove" onClick={() => onRemove(id)}>
+          <MdRemoveCircleOutline />
+        </div>
       </div>
     </div>
   );
 };
 
-export default React.memo(TodoListItem);
+export default React.memo(
+  TodoListItem,
+  (prevProps, nextProps) => prevProps.todo === nextProps.todo,
+);
 
 /*
     결과적으로 만들어지는 JSX의 전체를 생각해보자. 
