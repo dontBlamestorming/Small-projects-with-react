@@ -48,4 +48,16 @@ const nextState = produce(originalState, draft => {
 
 /*
     예시 코드를 보면 원본데이터에 수정, 업데이트, 제거까지 produce라는 함수 내부에서 다 처리할 수 있음을 볼 수 있다. 
+    또한 immer에서 제공하는 produce 함수를 호출할 때 첫번 째 파라미터가 함수 형태라면 업데이트 함수를 반환한다.
 */
+const update = produce(draft => {
+  draft.value = 2;
+});
+
+const originalState2 = {
+  value: 1,
+  foo: "bar"
+};
+
+const nextState2 = update(originalState2);
+console.log(nextState2); // { value : 2, foo : 'bar'}
