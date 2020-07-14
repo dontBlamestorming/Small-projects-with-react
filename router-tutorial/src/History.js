@@ -3,11 +3,7 @@ import React, { Component } from "react";
 class HistorySample extends Component {
   // 뒤로 가기
   handleGoBack = () => {
-    console.log(this.props.history);
-    console.log(this.props.location);
-    console.log(this.props.match);
-
-    //   this.props.history.goBack();
+    this.props.history.goBack();
   };
 
   // 홈으로 이동

@@ -1,4 +1,5 @@
 import React from "react";
+import WithRouterSample from "./WithRouter";
 
 const data = {
   dave: {
@@ -15,6 +16,7 @@ const Profile = ({ match }) => {
   console.log(match); // {path: "/profile/:username", url: "/profile/dave", isExact: true, params: {…}}
   // match 객체 :
   const { username } = match.params;
+  // username = match.params.username;
   const profile = data[username];
 
   if (!profile) {
@@ -27,6 +29,7 @@ const Profile = ({ match }) => {
         {username}({profile.name})
       </h3>
       <p>{profile.description}</p>
+      <WithRouterSample />
     </div>
   );
 };
