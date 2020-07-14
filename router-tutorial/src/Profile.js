@@ -1,5 +1,5 @@
 import React from "react";
-import WithRouterSample from "./WithRouter";
+import WithRouterSample from "./WithRouterSample";
 
 const data = {
   dave: {
