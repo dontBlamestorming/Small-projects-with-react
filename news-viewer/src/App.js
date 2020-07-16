@@ -1,8 +1,15 @@
-import React, { useState, useCallback } from 'react';
-import NewsList from './components/NewsList';
-import Categories from './components/Categories';
+import React from 'react';
+import { Route } from 'react-router-dom';
+import NewsPage from './pages/NewsPage';
 
 const App = () => {
+  return <Route path="/:category?" component={NewsPage} />;
+};
+
+export default App;
+
+/*
+  url 파라미터로 카테고리 값을 전달하기 전의 로직
   const [category, setCategory] = useState('all');
   const onSelect = useCallback(category => setCategory(category), []);
   return (
@@ -11,7 +18,7 @@ const App = () => {
       <NewsList category={category} />
     </>
   );
-};
+  */
 // import axios from 'axios';
 
 // const App = () => {
@@ -51,5 +58,3 @@ const App = () => {
 //     </div>
 //   );
 // };
-
-export default App;
