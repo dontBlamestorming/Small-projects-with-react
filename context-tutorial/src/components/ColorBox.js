@@ -3,34 +3,32 @@
     색상을 props로 받아오는 것이 아닌 ColorContext의 Consumer라는 컴포넌트를 통해 색상을 참조
 */
 
-import React from "react";
+import React, { useContext } from "react";
 import ColorConsumer from "../contexts/color";
 
 const ColorBox = () => {
+  const { state } = useContext(ColorConsumer);
   return (
-    <ColorConsumer>
-      {({ state }) => (
-        <>
-          <div
-            style={{
-              width: "64px",
-              height: "64px",
-              background: state.color
-            }}
-          />
-          <div
-            style={{
-              width: "32px",
-              height: "32px",
-              background: state.subcolor
-            }}
-          />
-        </>
-      )}
-    </ColorConsumer>
+    <>
+      <div
+        style={{
+          width: "64px",
+          height: "64px",
+          background: state.color
+        }}
+      />
+      <div
+        style={{
+          width: "32px",
+          height: "32px",
+          background: state.subcolor
+        }}
+      />
+    </>
   );
 };
 
+export default ColorBox;
 /*
     객체 비구조화 할당 문법을 사용하면 value로 값을 조회하는 과정을 생략할 수 있다.
     [value를 받아오는 경우]
@@ -71,5 +69,3 @@ const ColorBox = () => {
     <RenderPropsSample>{value => value * 2}</RenderPropsSample>
 
 */
-
-export default ColorBox;

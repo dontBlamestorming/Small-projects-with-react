@@ -25,3 +25,20 @@
 2. createContext의 기본값으로 사용할 객체도 실제 Provider의 value에 넣는 객체의 형태와 일치시켜주는 것이 좋다. 이러헥 하면 Context 코드를 볼 때 내부 값이 어떠헥 구성되어 있는지 파악하기도 쉽고, 실수로 Provider를 사용하지 않았을 때에도 에러가 발생하지 않는다.
 3. '색상 선택 컴포넌트 만들기'에서 Context API의 방식에 집중하자. SelectColor에서 마우스 클릭 이벤트가 발생했을 떄 그 값을 App에 전달하여 상태가 바뀐 것을 다시 props를 통해 ColorBox에 넣은 것이 아니다.
 4. 현재 state는 color context가 관리하고 있고 ColorBox는 color의 consumer로서 state의 property를 참조하고 있다. SelectColors는 state와 actions라는 method를 참조하고 있으며 이를 통해 color의 state를 업데이트하고 있고, [이 부분이 잘 이해가 안간다!!!!!!!]
+
+### Hook 또는 static contextType을 이용하여 Consumer 대신하기
+
+- Context에 있는 값을 사용할 때 Consummer 대신 다른 방식을 사용하여 값을 받아오는 방법
+- 빌트인 Hooks중 useContext()를 사용하면 '함수형'컴포넌트에서 Context를 편하게 사용할 수 있다.
+- ColorBox에서 Render props 패턴이 불편하다면 useContext로 ColorConsumer를 받아오면 된다. 그리고 세팅되어있는 값을 불러오면 된다.
+
+### static contextType 사용하기
+
+- 클래스형 컴포넌트에서 Context를 좀 더 쉽게 사용하고 싶다면 static contextType을 정의하는 방법이 있다. 클래스 상단에 static contextType을 지정해보자. 'static contextType = ColorContext;'
+- 이렇게 SelectColor의 this값을 강제로 ColorContext로 맞춰주면 클래스 내부의 메서드에서도 color.js의 context에 접근할 수 있다. 하지만 하나의 클래스에서는 하나의 context밖에 사용하지 못한다는 단점이 있다. 따라서 useContext()를 사용하길 권장한다.
+
+### 정리
+
+1. 기존에는 컴포넌트의 상태를 수직적으로 교류했다. 하지만 Context API를 사용함으로써 수평적(?)으로 공유할 수 있게 됬다. 프로젝트가 간단하다면 굳이 Context API를 사용할 필요는 없다.
+2. 하지만 전역적으로 사용되는 state가 있고 컴포넌트의 개수가 많다면 Context API를 사용하여 상태관리는 하는 것을 권장한다.
+3. Redux는 Context API 기반으로 만들어져 있으며 전역상태관리를 도와주는 라이브러리다. 리액트 v16.3에서 Context API가 개선되기 전에는 주로 리덕스를 사용했다. 단순한 전역상태관리라면 Context API를 사용하면 되지만 Redux의 미들웨어, 개발자도구, 코드의 유지보수성등을 고려한다면 모든상황에 Context API를 쓰는 것은 바람직하지 않다.
