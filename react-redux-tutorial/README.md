@@ -21,3 +21,20 @@
    > const INCREASE = 'counter/INCREASE';
 2. 액션 생성 함수에서 파라미터로 들어가는 값은 액션 객체 안에 추가 필드로 들어가게 됨. 이 중 insert 함수는 파라미터 이외에도 선언되어 있는 id값에 의존한다.
 3. 리듀서 함수는 불변성을 유지해야하며, 배열에 변화를 줄 때는 기존처럼 배열 내장 함수를 사용하여 구현
+4. 현 프로젝트에는 리듀서 함수를 2개 만들었다. 나중에 createStore()를 이용하여 스토어를 만들 때는 리듀서를 하나만 사용해야 하기 때문에 만들었던 리듀서를 합쳐야 한다. 이 작업은 conbinReducers()를 통해 쉽게 처리할 수 있다.
+5. 이 rootReducer가 들어 있는 파일 이름을 index.js로 해놓으면 import 때, import rootReducer from './modules'로 간단하게 불러올 수 있다.
+
+### 리액트 애플리케이션 리덕스 적용하기(/src/index.js)
+
+- 왜 src/index.js에서 store를 적용하는지?
+- 'react-redux'에서 가져온 Provider는 뭐지?
+- 컨테이너 컴포넌트 만들기
+  > 컴포넌트에서 리덕스 스토어에 접근하여 원하는 상태를 받고, 액션 또한 디스패치 해줄 것이다. 리덕스 스토어와 연동된 컴포넌트를 컨테이터 컴포넌트라고 한다.
+- 컨테이너 컴포넌트를 스토어와 연결할 때에는 connect()를 사용해야 한다.
+  > connect(mapStateToProps, mapDispatchToProps)(연동할 컴포넌트)
+  > mapStateToProps는 리덕스 스토어 안의 상태를 컴포넌트의 props로 넘겨주는 역할
+  > mapDispatchToProps는 액션 생성 함수를 컴포넌트의 props로 넘겨준다.
+  > 위의 형식으로 connect()를 호출하고 반환된 함수의 파라미터에 컴포넌트를 파라미터로 넣으면 스토어와 연동이 된다.
+  > 즉, const makeContainer = connect(mapStateToProps, mapDispatchToProps)(target component)로 작성하면 된다.
+  > connect 함수를 사용할 때는 일반적으로 mapStateToProps, mapDispatchToProps를 미리 선언해 놓고 사용한다. 하지만 connect 함수 내부에 익명함수 형태로 선언해도 문제가 되지는 않는다.
+  > 컴포넌트에서 액션을 디스패치하기 위해 각 액션 생성 함수를 호출하고 dispatch로 감싸는 작업이 번거로울 수 있다. 특히 액션 생성 함수의 개수가 많아진다면 더더욱. 이 때 여러가지 방법이 있다(CounterContainer.js 주석 참고)
