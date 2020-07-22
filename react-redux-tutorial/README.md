@@ -38,3 +38,23 @@
   > 즉, const makeContainer = connect(mapStateToProps, mapDispatchToProps)(target component)로 작성하면 된다.
   > connect 함수를 사용할 때는 일반적으로 mapStateToProps, mapDispatchToProps를 미리 선언해 놓고 사용한다. 하지만 connect 함수 내부에 익명함수 형태로 선언해도 문제가 되지는 않는다.
   > 컴포넌트에서 액션을 디스패치하기 위해 각 액션 생성 함수를 호출하고 dispatch로 감싸는 작업이 번거로울 수 있다. 특히 액션 생성 함수의 개수가 많아진다면 더더욱. 이 때 여러가지 방법이 있다(CounterContainer.js 주석 참고)
+
+### 리덕스 더 편하게 사용하기
+
+- 리듀서 함수를 작성할 떄 redux-actions와 immer 라이브러리를 활용하여 리덕스를 더욱 편하게 작성할 수 있다.
+
+1. redux-actions
+   > createAction - 액션 생성 함수를 간결하게 만들어준다. 파라미터가 필요한 경우 payload라는 이름을 사용한다.
+   > createAction으로 만든 액션 생성 함수는 파라미터로 받은 값을 객체 안에 넣을 때 원하는 이름으로 넣는 것이 아니라, action.id, action.todo와 같이 'action.payload'라는 이름을 공통적으로 넣어주게 된다.
+   > 따라서 기존의 업데이트 로직에서도 모두 action.payload 값을 조회하여 업데이트 하도록 구현해야 한다.
+    <pre>
+        <code>
+            const MY_ACTION = 'sample/MT_ACTION'
+            const myAction = createAction(MY_ACTION);
+            const action = myAction('hello world');
+            // 결과
+            { type : MY_ACTION, payload : 'hello world'}
+        </code>
+    </pre>
+   > 리듀서 더 짧게 작성하고 switch/case문이 아닌 handleActions라는 함수를 사용하여 각 액션마다 업데이트 함수를 설정하는 형식
+   > handleActions 함수의 첫 번째 파라미터에는 각 액션에 대한 업데이트 함수, 두 번째 파라미터에는 초기 상태
