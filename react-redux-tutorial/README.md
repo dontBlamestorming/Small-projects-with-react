@@ -58,3 +58,35 @@
     </pre>
    > 리듀서 더 짧게 작성하고 switch/case문이 아닌 handleActions라는 함수를 사용하여 각 액션마다 업데이트 함수를 설정하는 형식
    > handleActions 함수의 첫 번째 파라미터에는 각 액션에 대한 업데이트 함수, 두 번째 파라미터에는 초기 상태
+
+### Hooks를 사용하여 컨테이너 컴포넌트 만들기
+
+- Redux Store와 연동된 컨테이너 컴포넌트를 만들 때 connect 함수를 사용하는 대신 react-redux에서 제공하는 hooks를 사용할 수 있다.
+
+1. useSelector()로 Redux Store 상태 조회하기
+
+   > connect()를 사용하지 않고도 리덕스의 상태 조회 가능 -> const 결과 = useSelector(상태 선택 함수);
+   > 여기서 '상태 선택 함수'는 mapStateToProps와 형태가 같다.
+
+2. useDispatch()로 Redux Store의 Dispatch 함수 사용하기
+
+   > Container Component에서 action을 dispatch 해야 한다면 이 hook을 사용하면 된다.
+   > const dispatch = useDispatch();
+   > dispatch({ type : 'SAMPLE_ACTION'})
+   > useDispatch()를 사용할 때는 useCallback()와 항상 함께 사용하길 권장한다.
+
+3. useStore()로 컴포넌트에서 Redux Store 객체를 직접 사용할 수 있다.(코드 적용 X)
+
+   > const store = useStore();
+   > store.dispatch({ type: 'SAMPLE_ACTION });
+   > store.getState();
+
+4. useActions 유틸 Hook을 만들어서 사용
+   > 여러개의 action을 사용해야 하는 경우 코드를 깔끔하게 정리하여 사용할 수 있다.
+   > 액션 생성 함수를 액션을 디스패치하는 함수로 변환해 준다. 액션 생성 함수를 사용하여 액션 객체를 만들고 이를 Redux Store에 dispatch하는 함수를 '자동'으로 만들어 주는 것
+   > 두 가지 파라미터가 필요하다. 첫 번째는 액션 생성 함수로 이루어진 배열, 두 번째는 deps 배열이다. deps 안에 들어 있는 원소가 바뀌면 액션을 dispatch하는 함수를 새로 만든다.
+
+- connect 함수와의 주요 차이점
+  > connect 함수를 써도 좋고, useSelector와 useDispatch를 사용해도 좋다. 하지만 Hooks를 사용하여 Container Component를 만들 때 잘 알아두어야 할 사항이 있다.
+  > connect 함수를 사용하면 해당 container compoenet의 부모 컴포넌트가 re-rendering될 때 해당 component의 props가 바뀌지 않았다면 re-rendering이 자동으로 방지되어 성능이 최적화된다.
+  > 반면에 useSelector를 사용하여 Redux Store의 상태를 조회할 경우에는 이 최적화 작업이 자동으로 이루어지지 않으므로, 성능 최적화를 위해서 React.memo를 container component에 사용해야 한다.
