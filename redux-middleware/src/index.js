@@ -8,8 +8,9 @@ import * as serviceWorker from "./serviceWorker";
 import rootReducer from "./modules";
 // import loggerMiddleware from "./lib/loggerMiddleware";
 import logger from "redux-logger";
+import ReduxThunk from "redux-thunk";
 
-const store = createStore(rootReducer, applyMiddleware(logger));
+const store = createStore(rootReducer, applyMiddleware(logger, ReduxThunk));
 
 ReactDom.render(
   <Provider store={store}>
