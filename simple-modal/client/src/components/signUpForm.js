@@ -1,15 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Link, Route, BrowserRouter as Router } from "react-router-dom";
 import { Redirect } from "react-router-dom";
-
-const Notice = ({ isSame }) => {
-  return (
-    <p>
-      {isSame ? "동일한 비밀번호 입니다." : "동일한 비밀번호를 입력해 주세요."}
-    </p>
-  );
-};
 
 class SignUpForm extends Component {
   constructor(props) {
@@ -18,7 +9,7 @@ class SignUpForm extends Component {
       userId: "",
       password: "",
       nickname: "",
-      checkPassword: "",
+      samePassword: "",
       birthYear: "",
       birthMonth: "",
       birthDay: "",
@@ -31,6 +22,7 @@ class SignUpForm extends Component {
     };
   }
 
+  // 생년월일 중 '월'에 표시될 JSX 리턴 함수
   genMonth = () => {
     const month = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     // return month.map((array, index) => <option key={index}>{array}</option>);
@@ -41,6 +33,7 @@ class SignUpForm extends Component {
     return monthList;
   };
 
+  // '중복체크' 버튼 클릭시 실행하는 함수
   handleBtnOnClick = e => {
     e.preventDefault();
     this.DuplicateEmailCheck();
@@ -70,18 +63,7 @@ class SignUpForm extends Component {
       });
   };
 
-  renderRedirect = () => {
-    if (this.state.redirect) {
-      return <Redirect to="/confirmedUser" />;
-    }
-  };
-
-  setRedirect = () => {
-    this.setState({
-      redirect: true
-    });
-  };
-
+  // '회원가입' 버튼 클릭시 Submit이 실행되는 함수
   handleFormSubmit = e => {
     e.preventDefault();
     this.signUpUser();
@@ -101,8 +83,13 @@ class SignUpForm extends Component {
         })
         .then(
           function(res) {
+            console.log(res);
             if (res.data.redirectURL) {
-              this.setRedirect();
+              const nicknameToApp = res.config.data.nickname;
+              console.log(nicknameToApp);
+              this.setState({
+                redirect: true
+              });
             } else if (res.data.signUpSubmitError) {
               this.setState({
                 signUpSubmitError: res.data.signUpSubmitError
@@ -120,20 +107,22 @@ class SignUpForm extends Component {
     }
   };
 
+  // 정보가 입력될 때마다 state 업데이트
   handleValueChange = e => {
     let nextState = {};
     nextState[e.target.name] = e.target.value;
+    this.props.onValueChange(nextState);
     this.setState(nextState);
   };
 
+  // 비밀번호 동일여부 판단 함수
   handleReconfirmPassword = e => {
     let isSamePassword;
     let nextPassword = {};
     const inputValue = e.target.value;
     nextPassword[e.target.name] = inputValue;
     this.setState(nextPassword);
-    console.log(this.state);
-    // 비밀번호 동일여부 판단
+
     if (this.state.password === inputValue) {
       isSamePassword = true;
     } else {
@@ -146,7 +135,7 @@ class SignUpForm extends Component {
   render() {
     return (
       <div id="signUp">
-        {this.renderRedirect()}
+        {this.state.redirect && <Redirect to="/confirmedUser" />}
         <div className="signUp">
           <form className="signUpForm" onSubmit={this.handleFormSubmit}>
             <h1>회원가입시 필요한 정보를 입력해 주세요.</h1>
@@ -176,15 +165,19 @@ class SignUpForm extends Component {
             <br />
             RECONFIRM PASSWORD :{" "}
             <input
-              className="checkPassword"
+              className="samePassword"
               type="password"
-              name="checkPassword"
-              value={this.state.checkPassword}
+              name="samePassword"
+              value={this.state.samePassword}
               placeholder="reconfirm password"
               onChange={this.handleReconfirmPassword}
             />
             <br />
-            <Notice isSame={this.state.isSamePassword} />
+            <p>
+              {this.state.isSamePassword
+                ? "동일한 비밀번호 입니다."
+                : "동일한 비밀번호를 입력해 주세요."}
+            </p>
             NICKNAME :{" "}
             <input
               className="nickname"
@@ -197,7 +190,7 @@ class SignUpForm extends Component {
             <br />
             성별 :
             <label
-              for="genderInput1, genderInput2" // is it working?
+              htmlFor="genderInput1, genderInput2" // is it working?
               onChange={this.handleValueChange}
             >
               <input
@@ -223,7 +216,7 @@ class SignUpForm extends Component {
               className="birthYear"
               type="text"
               name="birthYear"
-              maxlength="4"
+              maxLength="4"
               placeholder="년(4자)"
               onChange={this.handleValueChange}
               value={this.state.birthYear}
@@ -245,7 +238,7 @@ class SignUpForm extends Component {
               type="text"
               value={this.state.birthDay}
               name="birthDay"
-              maxlength="2"
+              maxLength="2"
               placeholder="일"
               onChange={this.handleValueChange}
             />

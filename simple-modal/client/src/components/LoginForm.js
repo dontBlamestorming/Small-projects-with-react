@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Link, Route, BrowserRouter as Router } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Redirect } from "react-router-dom";
-import Greeting from "./Greeting";
 
 class LoginForm extends Component {
   constructor(props) {
@@ -11,18 +10,6 @@ class LoginForm extends Component {
       redirect: false
     };
   }
-
-  renderRedirect = () => {
-    if (this.state.redirect) {
-      return <Redirect to="/confirmedUser" />;
-    }
-  };
-
-  setRedirect = () => {
-    this.setState({
-      redirect: true
-    });
-  };
 
   handleFormSubmit = e => {
     e.preventDefault();
@@ -38,8 +25,12 @@ class LoginForm extends Component {
       .then(
         function(res) {
           if (res) {
-            this.props.onValueChange(res.data);
-            this.setRedirect();
+            const nickname = res.data.nickname;
+            this.props.onValueChange({ nickname: nickname });
+            console.log(res.data);
+            this.setState({
+              redirect: true
+            });
           }
         }.bind(this)
       )
@@ -58,7 +49,7 @@ class LoginForm extends Component {
   render() {
     return (
       <div id="login">
-        {this.renderRedirect()}
+        {this.state.redirect && <Redirect to="/confirmedUser" />}
         <div className="login">
           <form className="loginForm" onSubmit={this.handleFormSubmit}>
             <h1>아이디와 비밀번호를 입력해주세요.</h1>

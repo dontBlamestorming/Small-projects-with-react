@@ -55,7 +55,7 @@ class Greeting extends Component {
         <form className="greeting">
           <input type="text" placeholder="이름을 써주세요." />
         </form>
-        <h2>안녕하세요. {this.props.nickName}님. 반갑습니다.</h2>
+        <h2>안녕하세요. {this.props.nickname}님. 반갑습니다.</h2>
       </div>
     );
   }
