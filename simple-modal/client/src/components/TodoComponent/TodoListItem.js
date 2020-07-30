@@ -2,25 +2,72 @@ import React from "react";
 import {
   MdCheckBoxOutlineBlank,
   MdCheckBox,
-  MdRemoveCircleOutline
+  MdRemoveCircleOutline,
+  MdCheck,
+  MdDirectionsRun
 } from "react-icons/md";
 import classname from "classnames";
+import "./TodoListItem.scss";
 
-const TodoListItem = ({ todo }) => {
-  console.log("this is TodoListItem");
-  console.log(todo);
-  const text = todo.text;
-  console.log("text is " + text);
+const TodoListItem = ({ todo, onRemove, onToggle, onChangeStatus }) => {
+  const { id, text, checked, status } = todo;
+
+  const showTodo = () => {
+    if (status === "toDo") {
+      return (
+        <div className="toDo">
+          <div className="start" onClick={() => onChangeStatus(id)}>
+            <MdDirectionsRun />
+            START!
+          </div>
+          <div className="text">{text}</div>
+          <div className="remove" onClick={() => onRemove(id)}>
+            <MdRemoveCircleOutline />
+          </div>
+        </div>
+      );
+    }
+  };
+
+  const showDoing = () => {
+    if (status === "doing") {
+      return (
+        <div className="doing">
+          <div
+            className={classname("checkbox", { checked })}
+            onClick={() => onToggle(id)}
+          >
+            {checked ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
+          </div>
+          <div className="text">{text}</div>
+        </div>
+      );
+    }
+  };
+
+  const showDone = () => {
+    if (status === "done") {
+      return (
+        <div className="done">
+          <div>
+            <MdCheck />
+          </div>
+          <div className="text">{text}</div>
+          <div className="remove" onClick={() => onRemove(id)}>
+            <MdRemoveCircleOutline />
+          </div>
+        </div>
+      );
+    }
+  };
 
   return (
     <div className="TodoListItem">
-      {/* <div className={classname("checkbox", { checked })}>
-        {checked ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
-        <div className="text">{text}</div>
-      </div>
-      <div className="remove">
-        <MdRemoveCircleOutline />
-      </div> */}
+      {showTodo()}
+
+      {showDoing()}
+
+      {showDone()}
     </div>
   );
 };
